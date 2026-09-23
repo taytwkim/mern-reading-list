@@ -8,7 +8,7 @@ const app = express();
 // Parse JSON request bodies so handlers can read req.body.
 app.use(express.json());
 
-// Forward requests beginning with /api/tasks to the task router.
+// Forward requests beginning with /api/books to the book router.
 app.use('/api/books', booksRouter);
 
 async function startServer() {
