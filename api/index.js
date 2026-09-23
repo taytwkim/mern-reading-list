@@ -1,5 +1,6 @@
 const express = require('express');
 const booksRouter = require('./routes/books');
+const connectDB = require('./config/db');
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -11,6 +12,8 @@ app.use(express.json());
 app.use('/api/books', booksRouter);
 
 async function startServer() {
+    await connectDB();
+    
     app.listen(PORT, () => {
         console.log(`Server running at http://localhost:${PORT}`);
     });

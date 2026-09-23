@@ -1,42 +1,94 @@
-let uid = 0;
-let books = [];
+const mongoose = require('mongoose');
+const Book = require('../models/Book');
 
-function getBooks(req, res) {
-    res.status(200).json(books);
+function toBookResponse(book) {
+    return { id: book._id.toString(), title: book.title, author: book.author, status: book.status };
 }
 
-function createBook(req, res) {
-    uid += 1;
-
-    let book = {
-        id: uid,
-        title: req.body.title,
-        author: req.body.author,
-        status: req.body.status
-    };
-
-    books.push(book);
-    res.status(201).json(book);
+async function getBooks(req, res) {
+    const books = await Book.find();
+    res.status(200).json(books.map(toBookResponse));
 }
 
-function updateBook(req, res) {
-    const id = Number(req.params.id);
-    const book = books.find((book) => book.id === id);
-    
-    if (!book) {
-        return res.status(404).json({message: 'Book not found'});
+async function createBook(req, res) {
+    const title = req.body?.title;
+    const author = req.body?.author;
+    const status = req.body?.status;
+
+    if (typeof title !== 'string' || title.trim().length == 0) {
+        return res.status(400).json({ message: 'Title must be a non-empty string' });
     }
 
-    book.title = req.body.title;
-    book.author = req.body.author;
-    book.status = req.body.status;
+    if (typeof author !== 'string' || author.trim().length == 0) {
+        return res.status(400).json({ message: 'Author must be a non-empty string' });
+    }
 
-    res.status(200).json(book);
+    if (typeof status !== 'string' || (status != "Not Started" && status != "Reading" && status != "Finished")) {
+        return res.status(400).json({ message: 'Invalid status' });
+    }
+
+    const book = await Book.create({
+        title: title,
+        author: author,
+        status: status
+    });
+
+    res.status(201).json(toBookResponse(book));
 }
 
-function deleteBook(req, res) {
-    const id = Number(req.params.id);
-    books = books.filter((book) => book.id !== id);
+async function updateBook(req, res) {
+    const id = req.params.id;
+
+    if (!mongoose.isObjectIdOrHexString(id)) {
+        return res.status(400).json({ message: 'Invalid id' });
+    }
+
+    const title = req.body?.title;
+    const author = req.body?.author;
+    const status = req.body?.status;
+
+    if (typeof title !== 'string' || title.trim().length == 0) {
+        return res.status(400).json({ message: 'Title must be a non-empty string' });
+    }
+
+    if (typeof author !== 'string' || author.trim().length == 0) {
+        return res.status(400).json({ message: 'Author must be a non-empty string' });
+    }
+
+    if (typeof status !== 'string' || (status != "Not Started" && status != "Reading" && status != "Finished")) {
+        return res.status(400).json({ message: 'Invalid status' });
+    }
+
+    const book = await Book.findByIdAndUpdate(
+        id,
+        {
+            title: title,
+            author: author,
+            status: status
+        },
+        { returnDocument: 'after', runValidators: true }
+    );
+    
+    if (!book) {
+        return res.status(404).json({ message: 'Book not found' });
+    }
+
+    res.status(200).json(toBookResponse(book));
+}
+
+async function deleteBook(req, res) {
+    const id = req.params.id;
+    
+    if (!mongoose.isObjectIdOrHexString(id)) {
+        return res.status(400).json({ message: 'Invalid id' });
+    }
+
+    const book = await Book.findByIdAndDelete(id);
+
+    if (!book) {
+        return res.status(404).json({ message: 'Book not found' });
+    }
+
     res.status(204).end();
 }
 

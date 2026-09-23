@@ -6,7 +6,7 @@ I've already built a simple MERN Task Manager application and now want to build 
 
 My goal is to become more comfortable with MERN application architecture, understand how data flows between different components, and gain confidence navigating and debugging an unfamiliar codebase.
 
-## Project: Simple Book Library
+## Project: Reading List
 
 I want to build a simple MERN Stack application that allows users to manage a personal collection of books.
 
@@ -24,10 +24,10 @@ The application should support the following functionality:
 
 Each book should contain the following fields:
 
-| Field | Example |
-|---|---|
-| Title | The Hobbit |
-| Author | J. R. R. Tolkien |
+| Field          | Example                           |
+|----------------|-----------------------------------|
+| Title          | The Hobbit                        |
+| Author         | J. R. R. Tolkien                  |
 | Reading Status | Not Started, Reading, or Finished |
 
 ### Learning Objectives
