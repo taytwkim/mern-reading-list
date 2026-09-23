@@ -1,4 +1,4 @@
-# Reading List frontend
+# Frontend
 
 A basic React + Vite scaffold. The form, editing, deletion handlers, state updates,
 loading/error states, and client-side status filter are wired up. HTTP requests use

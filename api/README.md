@@ -1,4 +1,4 @@
-# Reading List API
+# API
 
 Express and Mongoose backend for the book library.
 
