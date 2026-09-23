@@ -8,6 +8,8 @@ My goal is to become more comfortable with MERN application architecture, unders
 
 ## Project: Reading List
 
+Setup and run instructions: [Backend](api/README.md) · [Frontend](client/README.md).
+
 I want to build a simple MERN Stack application that allows users to manage a personal collection of books.
 
 The application should support the following functionality:
